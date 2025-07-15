@@ -139,6 +139,8 @@
 //   print(trie.contains("nana")); // ❌ false (not a prefix)
 // }
 
+import 'package:path/path.dart';
+
 class TrieNode {
   Map<String, TrieNode> chilldren = {};
 }
@@ -148,10 +150,10 @@ class PrefixTrie {
   String end = "*";
 
   PrefixTrie(String str) {
-    populateSuffixTrie(str);
+    poupulateprefix(str);
   }
 
-  void populateSuffixTrie(String str) {
+  void poupulateprefix(String str) {
     for (int i = 1; i <= str.length; i++) {
       insertSubstringAt(str.substring(0, i));
     }
@@ -181,9 +183,48 @@ class PrefixTrie {
 }
 
 void main() {
-  PrefixTrie trie = PrefixTrie("banana");
+  // PrefixTrie trie = PrefixTrie("banana");
+  prefix trie = prefix("banana");
   print(trie.contains("ban")); // ✅ true
   print(trie.contains("bana")); // ✅ true
   print(trie.contains("banana")); // ✅ true
   print(trie.contains("nana")); // ❌ false (not a prefix)
+}
+
+class prefix {
+  TrieNode root = TrieNode();
+  String end = '*';
+
+  prefix(String str) {
+    populate(str);
+  }
+  void populate(String str) {
+    for (int i = 1; i <= str.length; i++) {
+      insert(str.substring(0, i));
+    }
+  }
+
+  void insert(String str) {
+    TrieNode node = root;
+
+    for (int i = 0; i < str.length; i++) {
+      String letter = str[i];
+
+      node.chilldren.putIfAbsent(letter, () => TrieNode());
+      node = node.chilldren[letter]!;
+    }
+    node.chilldren[end] = TrieNode();
+  }
+
+  bool contains(String str) {
+    TrieNode node = root;
+    for (int i = 0; i < str.length; i++) {
+      String letter = str[i];
+      if (!node.chilldren.containsKey(letter)) {
+        return false;
+      }
+      node = node.chilldren[letter]!;
+    }
+    return node.chilldren.containsKey(end);
+  }
 }

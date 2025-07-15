@@ -30,14 +30,16 @@
 // }
 
 void main() {
-  Trie trie = Trie();
+  // Trie trie = Trie();
+
+  Tr trie = Tr();
 
   // Insert words with a common prefix
   trie.insert("apple");
   trie.insert("app");
   trie.insert("apply");
 
-  trie.longestPrefix(); // Output: "app"
+  trie.longestprefix(); // Output: "app"
 }
 
 class TrieNode {
@@ -63,6 +65,31 @@ class Trie {
       String nexChar = node.chilldren.keys.first;
       prefix += nexChar;
       node = node.chilldren[nexChar]!;
+    }
+    print(prefix);
+  }
+}
+
+class Tr {
+  TrieNode root = TrieNode();
+  void insert(String str) {
+    TrieNode node = root;
+
+    for (int i = 0; i < str.length; i++) {
+      String letter = str[i];
+      node.chilldren.putIfAbsent(letter, () => TrieNode());
+      node = node.chilldren[letter]!;
+    }
+    node.isWord = true;
+  }
+
+  void longestprefix() {
+    String prefix = '';
+    TrieNode node = root;
+    while (node.isWord != true && node.chilldren.length == 1) {
+      String nextChar = node.chilldren.keys.first;
+      prefix += nextChar;
+      node = node.chilldren[nextChar]!;
     }
     print(prefix);
   }

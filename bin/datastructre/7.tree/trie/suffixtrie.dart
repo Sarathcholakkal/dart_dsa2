@@ -1,5 +1,8 @@
+import 'dart:io';
+
 void main() {
-  SuffixTrie newtrie = SuffixTrie("mannan");
+  // SuffixTrie newtrie = SuffixTrie("mannan");
+  suff newtrie = suff("mannan");
   print(newtrie.contains('mannan'));
   print(newtrie.contains('annan'));
   print(newtrie.contains('annan'));
@@ -84,6 +87,44 @@ class SuffixTrie {
       if (!node.chilldren.containsKey(letter)) {
         return false;
       }
+      node = node.chilldren[letter]!;
+    }
+    return node.chilldren.containsKey(end);
+  }
+}
+
+class suff {
+  TrieNode root = TrieNode();
+  String end = '*';
+
+  suff(String str) {
+    populate(str);
+  }
+
+  void populate(String str) {
+    for (int i = 0; i < str.length; i++) {
+      insert(i, str);
+    }
+  }
+
+  void insert(int start, String str) {
+    TrieNode node = root;
+    for (int i = start; i < str.length; i++) {
+      String letter = str[i];
+      node.chilldren.putIfAbsent(letter, () => TrieNode());
+      node = node.chilldren[letter]!;
+    }
+    node.chilldren[end] = TrieNode();
+  }
+
+  bool contains(String str) {
+    TrieNode node = root;
+    for (int i = 0; i < str.length; i++) {
+      String letter = str[i];
+      if (!node.chilldren.containsKey(letter)) {
+        return false;
+      }
+
       node = node.chilldren[letter]!;
     }
     return node.chilldren.containsKey(end);

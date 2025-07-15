@@ -126,8 +126,11 @@
 //   }
 // }
 
+import 'package:path/path.dart';
+
 void main() {
-  Trie newtrie = Trie();
+  // Trie newtrie = Trie();
+  Tr newtrie = Tr();
   newtrie.insert('bat');
   newtrie.insert('bananan');
   print(newtrie.autocomplete('ba'));
@@ -169,6 +172,46 @@ class Trie {
       node = node.chilldren[letter]!;
     }
     autocompleteHelper(node, prefix, sugg);
+    return sugg;
+  }
+}
+
+class Tr {
+  TrieNode root = TrieNode();
+
+  void insert(String str) {
+    TrieNode node = root;
+
+    for (int i = 0; i < str.length; i++) {
+      String letter = str[i];
+
+      node.chilldren.putIfAbsent(letter, () => TrieNode());
+      node = node.chilldren[letter]!;
+    }
+    node.isword = true;
+  }
+
+  void autohelper(TrieNode node, String prefix, List<String> sugg) {
+    if (node.isword) {
+      sugg.add(prefix);
+    }
+    for (var entry in node.chilldren.entries) {
+      autohelper(entry.value, prefix + entry.key, sugg);
+    }
+  }
+
+  List<String> autocomplete(String prefix) {
+    List<String> sugg = [];
+    TrieNode node = root;
+
+    for (int i = 0; i < prefix.length; i++) {
+      String letter = prefix[i];
+      if (!node.chilldren.containsKey(letter)) {
+        return <String>[];
+      }
+      node = node.chilldren[letter]!;
+    }
+    autohelper(node, prefix, sugg);
     return sugg;
   }
 }

@@ -1,34 +1,48 @@
-import 'package:collection/collection.dart';
+// import 'dart:math';
 
-void main() {
-  List<int> numbers = [7, 10, 4, 3, 20, 15];
-  int k = 3;
-
-  int result = findKthLargest(numbers, k);
-  print("The $k-th smallest element is: $result");
-}
-
-int findKthLargest(List<int> nums, int k) {
-  final heap = HeapPriorityQueue<int>(); // min-heap
-
-  for (int num in nums) {
-    heap.add(num);
-    if (heap.length > k) {
-      heap.removeFirst(); // remove smallest
-    }
-  }
-
-  return heap.first; // kth largest
-}
-
-//? implement max heap using inbuild structure
+// import 'package:collection/collection.dart';
 
 // void main() {
-//   final maxHeap = HeapPriorityQueue<int>((a, b) => b.compareTo(a));
+//   List<int> numbers = [7, 10, 4, 3, 20, 15];
+//   int k = 3;
 
-//   maxHeap.addAll([5, 1, 10, 3, 7]);
+//   int result = findKthLargest(numbers, k);
+//   print("The $k-th smallest element is: $result");
+// }
 
-//   while (maxHeap.isNotEmpty) {
-//     print(maxHeap.removeFirst()); // Output: 10, 7, 5, 3, 1
+// // int findKthLargest(List<int> nums, int k) {
+// //   final heap = HeapPriorityQueue<int>(); // min-heap
+
+// //   for (int num in nums) {
+// //     heap.add(num);
+// //     if (heap.length > k) {
+// //       heap.removeFirst(); // remove smallest
+// //     }
+// //   }
+
+// //   return heap.first; // kth largest
+// // }
+
+// //? implement max heap using inbuild structure
+
+// // void main() {
+// //   final maxHeap = HeapPriorityQueue<int>((a, b) => b.compareTo(a));
+
+// //   maxHeap.addAll([5, 1, 10, 3, 7]);
+
+// //   while (maxHeap.isNotEmpty) {
+// //     print(maxHeap.removeFirst()); // Output: 10, 7, 5, 3, 1
+// //   }
+// // }
+
+// int kthLargest(List<int> list) {
+//   int k = 3;
+//   final minHeap = HeapPriorityQueue<int>();
+//   for (int n in list) {
+//     minHeap.add(n);
+//     if (minHeap.length > k) {
+//       minHeap.removeFirst();
+//     }
 //   }
+//   return minHeap.first;
 // }

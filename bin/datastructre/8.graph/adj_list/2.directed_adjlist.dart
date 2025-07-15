@@ -1,4 +1,9 @@
 import 'dart:collection';
+import 'dart:convert';
+import 'dart:ffi';
+import 'dart:io';
+
+import 'package:path/path.dart';
 
 class Graph {
   Map<int, List<int>> adjList = {};
@@ -164,4 +169,67 @@ void main() {
   print("\nRemoving vertex 2:");
   graph.removeVertex(2);
   graph.display();
+}
+
+class Gra {
+  Map<int, List<int>> adjList = {};
+  void addVertex(int vertex) {
+    adjList.putIfAbsent(vertex, () => []);
+  }
+
+  void removeVertex(int vertex) {
+    adjList.remove(vertex);
+    for (var nie in adjList.values) {
+      nie.remove(vertex);
+    }
+  }
+
+  void addEdge(int src, int dest, {bool isDirected = true}) {
+    adjList.putIfAbsent(src, () => []).add(dest);
+    if (!isDirected) {
+      adjList.putIfAbsent(dest, () => []).add(src);
+    }
+  }
+
+  void removeEdge(int src, int dest, {bool isDirected = true}) {
+    adjList[src]?.remove(dest);
+    if (!isDirected) {
+      adjList[dest]?.remove(src);
+    }
+  }
+
+  void dfsiterative(int startvertex) {
+    List<int> stack = [];
+    Set<int> visited = {};
+    stack.add(startvertex);
+    while (stack.isNotEmpty) {
+      int current = stack.removeLast();
+      if (!visited.contains(current)) {
+        print(current);
+        visited.add(current);
+        for (var nei in adjList[current] ?? []) {
+          if (!visited.contains(nei)) {
+            stack.add(nei);
+          }
+        }
+      }
+    }
+  }
+
+  void bfsIterative(int startvertex) {
+    Queue<int> queue = Queue();
+    Set<int> visited = {};
+    queue.add(startvertex);
+    visited.add(startvertex);
+    while (queue.isNotEmpty) {
+      int current = queue.removeFirst();
+      print(current);
+      for (var nei in adjList[current] ?? []) {
+        if (!visited.contains(nei)) {
+          queue.add(nei);
+          visited.add(nei);
+        }
+      }
+    }
+  }
 }

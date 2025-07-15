@@ -1,3 +1,5 @@
+// import 'dart:collection';
+
 // class TreeNode {
 //   int data;
 //   TreeNode? left;
@@ -119,3 +121,93 @@
 //     }
 //   }
 // }
+
+import 'dart:collection';
+
+class TreeNode {
+  int data;
+  TreeNode? left;
+  TreeNode? right;
+  TreeNode(this.data);
+}
+
+class BinaryTree {
+  TreeNode? root;
+
+  void insert(int data) {
+    TreeNode newnode = TreeNode(data);
+    if (root == null) {
+      root = newnode;
+      return;
+    }
+    Queue<TreeNode> queue = Queue();
+    queue.add(root!);
+    while (queue.isNotEmpty) {
+      TreeNode currentNode = queue.removeFirst();
+
+      if (currentNode.left == null) {
+        currentNode.left = newnode;
+        break;
+      } else {
+        queue.add(currentNode.left!);
+      }
+
+      if (currentNode.right == null) {
+        currentNode.right = newnode;
+        break;
+      } else {
+        queue.add(currentNode.right!);
+      }
+    }
+  }
+
+  bool contains(int data) {
+    if (root == null) {
+      return false;
+    }
+
+    Queue<TreeNode> queue = Queue();
+    queue.add(root!);
+
+    while (queue.isNotEmpty) {
+      TreeNode currentNode = queue.removeFirst();
+      if (currentNode.data == data) {
+        return true;
+      }
+      if (currentNode.left != null) queue.add(currentNode.left!);
+      if (currentNode.right != null) queue.add(currentNode.right!);
+    }
+    return false;
+  }
+
+  void levelorder(TreeNode? root) {
+    if (root == null) return;
+
+    Queue<TreeNode> queue = Queue();
+    queue.add(root);
+    while (queue.isNotEmpty) {
+      TreeNode currentNode = queue.removeFirst();
+      print(currentNode.data);
+      if (currentNode.left != null) queue.add(currentNode.left!);
+      if (currentNode.right != null) queue.add(currentNode.right!);
+    }
+  }
+}
+
+void main() {
+  BinaryTree tree = BinaryTree();
+
+  tree.insert(10);
+  tree.insert(10);
+  tree.insert(10);
+  tree.insert(10);
+  tree.insert(10);
+
+  tree.insert(10);
+  tree.insert(10);
+  tree.insert(10);
+  tree.insert(1);
+  tree.levelorder(tree.root);
+
+  print(tree.contains(1));
+}

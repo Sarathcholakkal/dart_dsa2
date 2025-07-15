@@ -126,6 +126,10 @@
 //   // print(findheighoftree(tree.root));
 // }
 
+import 'dart:isolate';
+
+import 'package:path/path.dart';
+
 import 'problems/1.validate_bst.dart';
 import 'problems/2.heightoftree.dart';
 import 'problems/4.isbalancedtree.dart';
@@ -163,6 +167,8 @@ class BinarySearchTree {
         } else {
           currentNode = currentNode.right;
         }
+      } else {
+        break;
       }
     }
   }
@@ -195,10 +201,10 @@ class BinarySearchTree {
 
   //
   int getminvalue(TreeNode? node) {
-    if (node!.left != null) {
+    while (node!.left != null) {
       node = node.left;
     }
-    return node!.data;
+    return node.data;
   }
 
   void removeHelper(int data, TreeNode? currentNode, TreeNode? parnetNode) {
@@ -238,7 +244,8 @@ class BinarySearchTree {
 }
 
 void main() {
-  BinarySearchTree tree = BinarySearchTree();
+  BTree tree = BTree();
+  // BinarySearchTree tree = BinarySearchTree();
   tree.insert(20);
   tree.insert(10);
   tree.insert(30);
@@ -257,4 +264,110 @@ void main() {
   print("Is balanced tree: ${isBalanced(tree.root)}");
   print("single child node: ${countSinglechild(tree.root)}");
   print("count leaf node: ${countleafNode(tree.root)}");
+}
+
+class BTree {
+  TreeNode? root;
+  void insert(int data) {
+    TreeNode newnode = TreeNode(data);
+    if (root == null) {
+      root = newnode;
+      return;
+    }
+    TreeNode? currentNode = root;
+    while (true) {
+      if (data < currentNode!.data) {
+        if (currentNode.left == null) {
+          currentNode.left = newnode;
+          break;
+        } else {
+          currentNode = currentNode.left;
+        }
+      } else if (data > currentNode.data) {
+        if (currentNode.right == null) {
+          currentNode.right = newnode;
+          break;
+        } else {
+          currentNode = currentNode.right;
+        }
+      } else {
+        break;
+      }
+    }
+  }
+
+  // contan
+
+  bool contains(int data) {
+    if (root == null) {
+      return false;
+    }
+    TreeNode? currentNode = root;
+
+    while (currentNode != null) {
+      if (data < currentNode.data) {
+        currentNode = currentNode.left;
+      } else if (data > currentNode.data) {
+        currentNode = currentNode.right;
+      } else {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // get min
+  int getminValue(TreeNode? currentNode) {
+    while (currentNode!.left != null) {
+      currentNode = currentNode.left;
+    }
+    return currentNode.data;
+  }
+
+  // remvoe helper
+
+  void removeHelper(int data, TreeNode? currentNode, TreeNode? parentNode) {
+    while (currentNode != null) {
+      if (data < currentNode.data) {
+        parentNode = currentNode;
+        currentNode = currentNode.left;
+      } else if (data > currentNode.data) {
+        parentNode = currentNode;
+        currentNode = currentNode.right;
+      } else {
+        if (currentNode.left != null && currentNode.right != null) {
+          currentNode.data = getminValue(currentNode.right);
+          removeHelper(currentNode.data, currentNode.right, currentNode);
+        } else {
+          TreeNode? child = currentNode.left != null
+              ? currentNode.left
+              : currentNode.right;
+          if (parentNode == null) {
+            root = child;
+          } else if (parentNode.left == currentNode) {
+            parentNode.left = child;
+          } else {
+            parentNode.right = child;
+          }
+        }
+        break;
+      }
+    }
+  }
+
+  /// remove
+  void remove(int data) {
+    removeHelper(data, root, null);
+  }
+
+  // inorder
+
+  void inorder(TreeNode? root) {
+    if (root == null) {
+      return;
+    }
+    inorder(root.left);
+    print(root.data);
+    inorder(root.right);
+  }
 }
