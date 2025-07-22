@@ -1,5 +1,3 @@
-import 'dart:io';
-
 class Node {
   int data;
   Node? next;
@@ -58,10 +56,7 @@ class SlinkedList {
     }
 
     // If node was not found
-    if (ptr == null) {
-      print('node not exist unable to delete');
-      return;
-    }
+    if (ptr == null) return;
 
     // If tail node is to be deleted
     if (ptr == tail) {
@@ -120,86 +115,4 @@ void main() {
   print("After deleting last remaining node (20):");
   list.inserAfter(10, 15);
   list.display();
-}
-
-class Singly {
-  Node? head;
-  Node? tail;
-  //insert
-  void insert(int data) {
-    Node newnode = Node(data);
-    if (head == null) {
-      head = newnode;
-      tail = newnode;
-    } else {
-      tail!.next = newnode;
-      tail = tail!.next;
-    }
-  }
-  //display
-
-  void display() {
-    if (head == null) {
-      print("nothing to displau");
-      return;
-    }
-    Node? ptr = head;
-    while (ptr != null) {
-      print(ptr.data);
-      ptr = ptr.next;
-    }
-  }
-
-  //delete
-  void delete(int data) {
-    if (head == null) {
-      return;
-    }
-    if (head!.data == data) {
-      head = head!.next;
-      if (head == null) {
-        tail = null;
-      }
-      return;
-    }
-
-    Node? ptr = head;
-    Node? prev;
-    while (ptr != null && ptr.data != data) {
-      prev = ptr;
-      ptr = ptr.next;
-    }
-    {
-      if (ptr == null) {
-        return;
-      }
-
-      if (ptr == tail) {
-        tail = prev;
-        tail!.next = null;
-        return;
-      }
-      prev!.next = ptr.next;
-    }
-  }
-
-  //insertAfter
-  void insertAfter(int nextTo, int data) {
-    Node? ptr = head;
-    Node newnode = Node(data);
-
-    while (ptr != null && ptr.data != nextTo) {
-      ptr = ptr.next;
-    }
-    if (ptr == null) {
-      return;
-    }
-    if (ptr == tail) {
-      tail!.next = newnode;
-      tail = tail!.next;
-      return;
-    }
-    newnode.next = ptr.next;
-    ptr.next = newnode;
-  }
 }
